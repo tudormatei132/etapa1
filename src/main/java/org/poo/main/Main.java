@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
 import org.poo.fileio.ObjectInput;
+import org.poo.system.SystemManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public final class Main {
         ObjectInput inputData = objectMapper.readValue(file, ObjectInput.class);
 
         ArrayNode output = objectMapper.createArrayNode();
-
+        new SystemManager().run(inputData, objectMapper, output);
         /*
          * TODO Implement your function here
          *

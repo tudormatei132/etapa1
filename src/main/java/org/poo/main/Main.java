@@ -7,6 +7,7 @@ import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
 import org.poo.fileio.ObjectInput;
 import org.poo.system.SystemManager;
+import org.poo.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public final class Main {
         var sortedFiles = Arrays.stream(Objects.requireNonNull(directory.listFiles())).
                 sorted(Comparator.comparingInt(Main::fileConsumer))
                 .toList();
-
+            int i = 0;
         for (File file : sortedFiles) {
             String filepath = CheckerConstants.OUT_PATH + file.getName();
             File out = new File(filepath);
@@ -57,6 +58,8 @@ public final class Main {
             if (isCreated) {
                 action(file.getName(), filepath);
             }
+
+            i++;
         }
 
         Checker.calculateScore();
@@ -75,6 +78,7 @@ public final class Main {
 
         ArrayNode output = objectMapper.createArrayNode();
         new SystemManager().run(inputData, objectMapper, output);
+        Utils.resetRandom();
         /*
          * TODO Implement your function here
          *

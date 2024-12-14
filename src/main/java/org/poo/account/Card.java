@@ -9,11 +9,12 @@ import lombok.Setter;
 public class Card {
     private StringBuilder status;
     private StringBuilder cardNumber;
+    private Account account;
 
-
-    public Card(final StringBuilder cardNumber) {
+    public Card(final StringBuilder cardNumber, final Account account) {
         this.status = new StringBuilder("active");
         this.cardNumber = cardNumber;
+        this.account = account;
     }
 
     public ObjectNode printCard(ObjectMapper mapper) {

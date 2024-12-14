@@ -18,7 +18,7 @@ public class Account {
     private double interestRate;
     private double balance;
     private ArrayList<Card> cards;
-
+    private double minBalance;
 
     public Account(final User user, final StringBuilder IBAN, final StringBuilder currency,
                    final double interestRate) {
@@ -28,11 +28,16 @@ public class Account {
         this.interestRate = interestRate;
         this.balance = 0;
         cards = new ArrayList<>();
+        minBalance = 0;
     }
 
 
     public void AddCard(final Card card) {
         cards.add(card);
+    }
+
+    public void removeCard(final Card card) {
+        cards.remove(card);
     }
 
     public ObjectNode printAccount(ObjectMapper mapper) {

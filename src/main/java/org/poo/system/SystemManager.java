@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.*;
+import org.poo.command.CommandHandler;
 import org.poo.fileio.CommandInput;
 import org.poo.fileio.ObjectInput;
 import org.poo.fileio.UserInput;
@@ -18,10 +19,29 @@ public class SystemManager {
     private ArrayList<User> users;
     private HashMap<String, Account> map;
     private HashMap<String, User> userMap;
+    private HashMap<String, Card> cardMap;
+
     public SystemManager() {
         users = new ArrayList<>();
         map = new HashMap<>();
         userMap = new HashMap<>();
+        cardMap = new HashMap<>();
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public HashMap<String, Account> getMap() {
+        return map;
+    }
+
+    public HashMap<String, User> getUserMap() {
+        return userMap;
+    }
+
+    public HashMap<String, Card> getCardMap() {
+        return cardMap;
     }
 
     public void run(final ObjectInput input, final ObjectMapper mapper, final ArrayNode output) {
@@ -32,62 +52,10 @@ public class SystemManager {
         }
 
 
+        CommandHandler handler = new CommandHandler(this, mapper, output);
+
         for (CommandInput command : input.getCommands()) {
-            ObjectNode actionOutput = mapper.createObjectNode();
-            actionOutput.put("command", command.getCommand());
-            actionOutput.put("timestamp", command.getTimestamp());
-            switch (command.getCommand()) {
-                case "printUsers": {
-                    ArrayNode userArrayNode = mapper.createArrayNode();
-                    for (User user : users) {
-                        userArrayNode.add(user.printUser(mapper));
-                    }
-                    actionOutput.set("output", userArrayNode);
-                    output.add(actionOutput);
-                }
-                break;
-                case "addAccount": {
-                    User temp = userMap.get(command.getEmail());
-                    Account account;
-                    if (command.getAccountType().equals("classic")) {
-                        account = new ClassicAccount(temp,
-                                new StringBuilder(Utils.generateIBAN()),
-                                new StringBuilder(command.getCurrency()),
-                                command.getInterestRate());
-                    }
-                    else {
-                        account = new SavingsAccount(temp,
-                                new StringBuilder(Utils.generateIBAN()),
-                                new StringBuilder(command.getCurrency()),
-                                command.getInterestRate());
-                    }
-                    temp.addAccount(account);
-                    System.out.println(account.getIBAN().toString());
-                    map.put(account.getIBAN().toString(), account);
-                }
-                break;
-                case "createCard": {
-                    Account account = map.get(command.getAccount());
-                    if (account == null)
-                        break;
-                    account.AddCard(new Card(new StringBuilder(Utils.generateCardNumber())));
-                }
-                break;
-                case "addFunds": {
-                    Account account = map.get(command.getAccount());
-                    if (account == null)
-                        break;
-                    account.addFunds(command.getAmount());
-                }
-                break;
-                case "removeAccount": {
-                    Account account = map.get(command.getAccount());
-                    account.getUser().removeAccount(account);
-                    map.remove(account.getIBAN().toString());
-                }
-                break;
-                default:
-            }
+            handler.execute(command);
         }
     }
 

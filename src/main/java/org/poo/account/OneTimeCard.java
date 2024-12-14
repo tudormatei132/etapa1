@@ -7,7 +7,8 @@ public class OneTimeCard extends Card {
         super(cardNumber, account);
     }
 
-    public void use() {
+    public void use(double amount) {
+        getAccount().addFunds(-amount);
         setStatus(new StringBuilder("inactive"));
     }
 

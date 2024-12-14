@@ -17,7 +17,10 @@ public class RemoveCard implements Command {
     @Override
     public void execute() {
         Card temp = cards.get(cardNumber);
+        if (temp == null) {
+            return;
+        }
         temp.getAccount().removeCard(temp);
-
+        cards.remove(temp.getCardNumber().toString());
     }
 }

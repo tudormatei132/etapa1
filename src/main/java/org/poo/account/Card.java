@@ -17,12 +17,16 @@ public class Card {
         this.account = account;
     }
 
-    public ObjectNode printCard(ObjectMapper mapper) {
+    public ObjectNode printCard(final ObjectMapper mapper) {
         ObjectNode node = mapper.createObjectNode();
         node.put("status", status.toString());
         node.put("cardNumber", cardNumber.toString());
         return node;
     }
 
+
+    public void use(final double amount) {
+        getAccount().addFunds(-amount);
+    }
 
 }

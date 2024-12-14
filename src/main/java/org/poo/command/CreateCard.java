@@ -19,7 +19,8 @@ public class CreateCard implements Command {
     public void execute() {
         Card temp = new Card(new StringBuilder(Utils.generateCardNumber()), account);
         account.AddCard(temp);
-        cardMap.put(temp.getCardNumber().toString(), temp);
+        String cardNumber = temp.getCardNumber().toString();
+        cardMap.put(cardNumber, temp);
     }
 
 }

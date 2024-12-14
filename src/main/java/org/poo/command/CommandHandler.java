@@ -71,8 +71,11 @@ public class CommandHandler {
                 return new RemoveCard(command.getCardNumber(), system.getCardMap());
             }
 
-            case "PayOnline": {
+            case "payOnline": {
 
+                return new PayOnline(system.getCardMap().get(command.getCardNumber()),
+                        command.getAmount(), command.getCurrency(), command.getEmail(),
+                        output, mapper, command.getTimestamp(), system.getCardMap(), system.getConverter());
             }
 
         }

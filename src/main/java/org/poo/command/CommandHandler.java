@@ -55,7 +55,7 @@ public class CommandHandler {
 
             case "createCard": {
                 return new CreateCard(system.getMap().get(command.getAccount()),
-                        system.getCardMap());
+                        system.getCardMap(), command.getTimestamp());
             }
 
             case "addFunds": {
@@ -68,14 +68,27 @@ public class CommandHandler {
             }
 
             case "deleteCard": {
-                return new RemoveCard(command.getCardNumber(), system.getCardMap());
+                return new RemoveCard(command.getCardNumber(), system.getCardMap(),
+                                      command.getTimestamp());
             }
 
             case "payOnline": {
-
                 return new PayOnline(system.getCardMap().get(command.getCardNumber()),
                         command.getAmount(), command.getCurrency(), command.getEmail(),
-                        output, mapper, command.getTimestamp(), system.getCardMap(), system.getConverter());
+                        output, mapper, command.getTimestamp(), system.getCardMap(),
+                        system.getConverter(), command.getCommerciant());
+            }
+
+            case "sendMoney": {
+                return new SendMoney(command.getDescription(), command.getEmail(),
+                        system.getMap().get(command.getAccount()),
+                        system.getMap().get(command.getReceiver()), command.getAmount(),
+                        command.getTimestamp(), system.getConverter());
+            }
+
+            case "printTransactions": {
+                return new PrintTransactions(system.getUserMap().get(command.getEmail()),
+                        output, mapper, command.getTimestamp());
             }
 
         }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.transactions.Payment;
+import org.poo.transactions.Transaction;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ public class Account {
     private double balance;
     private ArrayList<Card> cards;
     private double minBalance;
+    private ArrayList<Transaction> transactions;
+    private ArrayList<Payment> payments;
 
     public Account(final User user, final StringBuilder IBAN, final StringBuilder currency,
                    final double interestRate) {
@@ -29,6 +33,8 @@ public class Account {
         this.balance = 0;
         cards = new ArrayList<>();
         minBalance = 0;
+        transactions = new ArrayList<>();
+        payments = new ArrayList<>();
     }
 
 

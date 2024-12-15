@@ -5,6 +5,7 @@ import org.poo.account.ClassicAccount;
 import org.poo.account.SavingsAccount;
 import org.poo.account.User;
 import org.poo.fileio.CommandInput;
+import org.poo.transactions.AccountCreation;
 import org.poo.utils.Utils;
 
 import java.util.HashMap;
@@ -43,5 +44,7 @@ public class AddAccount implements  Command {
         System.out.println(account.getIBAN().toString());
         String IBAN = account.getIBAN().toString();
         map.put(IBAN, account);
+        AccountCreation creation = new AccountCreation(command.getTimestamp());
+        userMap.get(command.getEmail()).getTransactions().add(creation);
     }
 }

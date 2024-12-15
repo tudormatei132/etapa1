@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Card;
 import org.poo.account.OneTimeCard;
 import org.poo.system.Converter;
+
+import org.poo.transactions.Payment;
+import org.poo.transactions.Transaction;
 import org.poo.utils.Utils;
 
 import java.util.HashMap;
@@ -22,10 +25,13 @@ public class PayOnline implements Command {
     private int timestamp;
     private HashMap<String, Card> cardMap;
     private Converter converter;
+    private String commerciant;
+
 
     public PayOnline(final Card card, final double amount, final String currency,
                      final String email, final ArrayNode output, final ObjectMapper mapper,
-                     final int timestamp, final HashMap<String, Card> cardMap, final Converter converter) {
+                     final int timestamp, final HashMap<String, Card> cardMap,
+                     final Converter converter, final String commerciant) {
         this.card = card;
         this.amount = amount;
         this.currency = currency;
@@ -35,6 +41,7 @@ public class PayOnline implements Command {
         this.timestamp = timestamp;
         this.cardMap = cardMap;
         this.converter = converter;
+        this.commerciant = commerciant;
     }
 
     public void execute() {
@@ -58,8 +65,17 @@ public class PayOnline implements Command {
             return;
         }
         if (card.getAccount().getBalance() < amount) {
+            Transaction error = new Transaction(timestamp, "Insufficient funds");
+            card.getAccount().getTransactions().add(error);
+            card.getAccount().getUser().getTransactions().add(error);
             return;
         }
+
+        Payment new_payment = new Payment(timestamp, "Card payment", amount, commerciant);
+
+        card.getAccount().getTransactions().add(new_payment);
+        card.getAccount().getPayments().add(new_payment);
+        card.getAccount().getUser().getTransactions().add(new_payment);
 
         card.use(amount);
         if (card.getStatus().toString().equals("inactive")) {

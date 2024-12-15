@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.fileio.UserInput;
+import org.poo.transactions.Transaction;
 
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 @Getter @Setter
 public class User {
@@ -13,13 +16,14 @@ public class User {
     private StringBuilder surname;
     private StringBuilder email;
     private ArrayList<Account> accounts;
-
+    private ArrayList<Transaction> transactions;
 
     public User(final UserInput input) {
         firstName = new StringBuilder(input.getFirstName());
         surname = new StringBuilder(input.getLastName());
         email = new StringBuilder(input.getEmail());
         accounts = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
     /**

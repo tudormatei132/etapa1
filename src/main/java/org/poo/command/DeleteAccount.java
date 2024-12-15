@@ -41,6 +41,11 @@ public class DeleteAccount implements Command {
             succes.put("success", "Account deleted");
             succes.put("timestamp", timestamp);
             node.put("output", succes);
+        } else {
+            ObjectNode error = mapper.createObjectNode();
+            error.put("error", "Account couldn't be deleted - see org.poo.transactions for details");
+            error.put("timestamp", timestamp);
+            node.put("output", error);
         }
         output.add(node);
     }

@@ -29,4 +29,17 @@ public class Card {
         getAccount().addFunds(-amount);
     }
 
+    public void update() {
+        if (Double.compare(getAccount().getBalance() - getAccount().getMinBalance(), 30) > 0) {
+            status = new StringBuilder("active");
+            return;
+        }
+        if (Double.compare(getAccount().getBalance(), getAccount().getMinBalance()) <= 0) {
+            status = new StringBuilder("frozen");
+            return;
+        }
+        status = new StringBuilder("warning");
+    }
+
+
 }

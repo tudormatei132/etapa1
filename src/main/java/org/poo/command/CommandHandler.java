@@ -91,6 +91,15 @@ public class CommandHandler {
                         output, mapper, command.getTimestamp());
             }
 
+            case "checkCardStatus": {
+                return new CheckCardStatus(system.getCardMap().get(command.getCardNumber()),
+                        command.getTimestamp(), output, mapper);
+            }
+
+            case "setMinBalance": {
+                return new SetMinimumBalance(command.getMinBalance(),
+                        system.getMap().get(command.getAccount()));
+            }
         }
         return null;
     }

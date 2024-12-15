@@ -64,8 +64,16 @@ public class PayOnline implements Command {
         if (!correspondingEmail.equals(email)) {
             return;
         }
-        if (card.getAccount().getBalance() < amount) {
+        if (Double.compare(card.getAccount().getBalance() - card.getAccount().getMinBalance(),
+                amount) < 0) {
             Transaction error = new Transaction(timestamp, "Insufficient funds");
+            card.getAccount().getTransactions().add(error);
+            card.getAccount().getUser().getTransactions().add(error);
+            return;
+        }
+
+        if (card.getStatus().toString().equals("frozen")) {
+            Transaction error = new Transaction(timestamp, "The card is frozen");
             card.getAccount().getTransactions().add(error);
             card.getAccount().getUser().getTransactions().add(error);
             return;

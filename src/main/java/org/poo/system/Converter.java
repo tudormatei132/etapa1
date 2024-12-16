@@ -1,5 +1,8 @@
 package org.poo.system;
 
+import org.poo.graph.CurrencyGraph;
+import org.poo.graph.Edge;
+
 import java.util.HashSet;
 
 public class Converter {

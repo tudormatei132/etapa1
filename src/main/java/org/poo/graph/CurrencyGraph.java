@@ -1,4 +1,4 @@
-package org.poo.system;
+package org.poo.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;

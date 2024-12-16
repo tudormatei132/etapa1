@@ -45,6 +45,7 @@ public class AddAccount implements  Command {
         String IBAN = account.getIBAN().toString();
         map.put(IBAN, account);
         AccountCreation creation = new AccountCreation(command.getTimestamp());
+        account.getTransactions().add(creation);
         userMap.get(command.getEmail()).getTransactions().add(creation);
     }
 }

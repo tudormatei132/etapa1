@@ -64,4 +64,19 @@ public class Account {
         balance += funds;
     }
 
+    public ArrayList<Transaction> getTransactions(final int startTimestamp, final int endTimestamp) {
+        ArrayList<Transaction> result = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getTimestamp() >= startTimestamp && transaction.getTimestamp() <= endTimestamp) {
+                result.add(transaction);
+            }
+            if (transaction.getTimestamp() > endTimestamp) {
+                break;
+            }
+        }
+        return result;
+
+    }
+
+
 }

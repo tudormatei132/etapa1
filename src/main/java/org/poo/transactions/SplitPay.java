@@ -1,0 +1,37 @@
+package org.poo.transactions;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SplitPay extends Transaction {
+
+    private String currency;
+    private List<String> involvedAccounts;
+    private double amount;
+
+    public SplitPay(int timestamp, String description, String currency, List<String> involvedAccounts, double amount) {
+        super(timestamp, description);
+        this.currency = currency;
+        this.involvedAccounts = involvedAccounts;
+        this.amount = amount;
+    }
+
+    public ObjectNode print(ObjectMapper mapper) {
+        ObjectNode result = mapper.createObjectNode();
+        result.put("timestamp", getTimestamp());
+        result.put("description", getDescription());
+        result.put("currency", currency);
+        result.put("amount", amount);
+        ArrayNode accounts = mapper.createArrayNode();
+        for (String account : involvedAccounts) {
+            accounts.add(account);
+        }
+        result.put("involvedAccounts", accounts);
+        return result;
+    }
+
+}

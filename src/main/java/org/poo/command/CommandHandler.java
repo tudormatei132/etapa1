@@ -64,7 +64,7 @@ public class CommandHandler {
 
             case "createOneTimeCard": {
                 return new CreateOneTimeCard(system.getMap().get(command.getAccount()),
-                        system.getCardMap());
+                        system.getCardMap(), command.getTimestamp());
             }
 
             case "deleteCard": {
@@ -80,10 +80,15 @@ public class CommandHandler {
             }
 
             case "sendMoney": {
-                return new SendMoney(command.getDescription(), command.getEmail(),
-                        system.getMap().get(command.getAccount()),
-                        system.getMap().get(command.getReceiver()), command.getAmount(),
-                        command.getTimestamp(), system.getConverter());
+                Account receiver = system.getMap().get(command.getReceiver());
+                if (receiver == null) {
+                    if (system.getMap().get(command.getAccount()) != null) {
+                        receiver = system.getMap().get(command.getAccount());
+                    }
+                }
+                return new SendMoney(command.getDescription(), system.getUserMap().get(command.getEmail()), command.getAmount(),
+                        system.getConverter(), command.getAccount(), command.getReceiver(), command.getTimestamp(),
+                        system.getMap());
             }
 
             case "printTransactions": {
@@ -97,8 +102,25 @@ public class CommandHandler {
             }
 
             case "setMinBalance": {
-                return new SetMinimumBalance(command.getMinBalance(),
+                return new SetMinimumBalance(command.getAmount(),
                         system.getMap().get(command.getAccount()));
+            }
+
+            case "setAlias": {
+                return new SetAlias(command.getAlias(), system.getMap().get(command.getAccount()),
+                        system.getUserMap().get(command.getEmail()));
+            }
+
+            case "splitPayment": {
+                return new SplitPayment(command.getAccounts(), command.getTimestamp(),
+                        command.getCurrency(), command.getAmount(), system.getMap(),
+                        system.getConverter());
+            }
+
+            case "report": {
+                return new PrintReport(system.getMap().get(command.getAccount()),
+                        command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
+                        command.getTimestamp());
             }
         }
         return null;

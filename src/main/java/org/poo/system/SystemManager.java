@@ -24,6 +24,8 @@ public class SystemManager {
     private HashMap<String, Card> cardMap;
     private Converter converter;
 
+
+
     public SystemManager() {
         users = new ArrayList<>();
         map = new HashMap<>();

@@ -10,6 +10,8 @@ import org.poo.transactions.Transaction;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 @Getter @Setter
 public class User {
     private StringBuilder firstName;
@@ -17,6 +19,8 @@ public class User {
     private StringBuilder email;
     private ArrayList<Account> accounts;
     private ArrayList<Transaction> transactions;
+    private HashMap<String, Account> aliases;
+
 
     public User(final UserInput input) {
         firstName = new StringBuilder(input.getFirstName());
@@ -24,6 +28,7 @@ public class User {
         email = new StringBuilder(input.getEmail());
         accounts = new ArrayList<>();
         transactions = new ArrayList<>();
+        aliases = new HashMap<>();
     }
 
     /**

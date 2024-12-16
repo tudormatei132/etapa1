@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.poo.transactions.Payment;
 import org.poo.transactions.Transaction;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 @Getter
@@ -23,7 +25,7 @@ public class Account {
     private double minBalance;
     private ArrayList<Transaction> transactions;
     private ArrayList<Payment> payments;
-
+    private HashMap<String, Double> moneySpent;
     public Account(final User user, final StringBuilder IBAN, final StringBuilder currency,
                    final double interestRate) {
         this.user = user;
@@ -35,6 +37,7 @@ public class Account {
         minBalance = 0;
         transactions = new ArrayList<>();
         payments = new ArrayList<>();
+        moneySpent = new HashMap<>();
     }
 
 
@@ -77,6 +80,21 @@ public class Account {
         return result;
 
     }
+
+    public ArrayList<Payment> getPayments(final int start, final int end) {
+        ArrayList<Payment> result = new ArrayList<>();
+        for (Payment payment : payments) {
+            if (payment.getTimestamp() >= start && payment.getTimestamp() <= end) {
+                result.add(payment);
+            }
+            if (payment.getTimestamp() > end) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
 
 
 }

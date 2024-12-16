@@ -122,6 +122,12 @@ public class CommandHandler {
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
             }
+
+            case "spendingsReport": {
+                return new SpendingsReport(system.getMap().get(command.getAccount()),
+                        command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
+                        command.getTimestamp());
+            }
         }
         return null;
     }

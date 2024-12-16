@@ -88,8 +88,7 @@ public class PayOnline implements Command {
         card.use(amount);
         if (card.getStatus().toString().equals("inactive")) {
             cardMap.remove(card.getCardNumber().toString());
-            card = new OneTimeCard(new StringBuilder(Utils.generateCardNumber()),
-                    card.getAccount());
+            card.setCardNumber(new StringBuilder(Utils.generateCardNumber()));
             cardMap.put(card.getCardNumber().toString(), card);
         }
 

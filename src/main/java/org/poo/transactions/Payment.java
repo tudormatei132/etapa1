@@ -2,8 +2,9 @@ package org.poo.transactions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-public class Payment extends Transaction {
+import lombok.Getter;
+@Getter
+public class Payment extends Transaction  {
 
     private double amount;
     private String commerciant;
@@ -22,5 +23,7 @@ public class Payment extends Transaction {
         result.put("commerciant", commerciant);
         return result;
     }
+
+
 
 }

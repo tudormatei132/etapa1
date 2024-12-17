@@ -55,7 +55,7 @@ public class CommandHandler {
 
             case "createCard": {
                 return new CreateCard(system.getMap().get(command.getAccount()),
-                        system.getCardMap(), command.getTimestamp());
+                        system.getCardMap(), command.getTimestamp(), command.getEmail());
             }
 
             case "addFunds": {
@@ -127,6 +127,16 @@ public class CommandHandler {
                 return new SpendingsReport(system.getMap().get(command.getAccount()),
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
+            }
+
+            case "changeInterestRate": {
+                return new ChangeInterestRate(system.getMap().get(command.getAccount()),
+                        command.getInterestRate(), command.getTimestamp(), output, mapper);
+            }
+
+            case "addInterest": {
+                return new GetInterest(system.getMap().get(command.getAccount()),
+                        command.getTimestamp(), output, mapper);
             }
         }
         return null;

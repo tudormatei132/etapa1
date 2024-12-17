@@ -31,8 +31,7 @@ public class AddAccount implements  Command {
         if (command.getAccountType().equals("classic")) {
             account = new ClassicAccount(temp,
                     new StringBuilder(Utils.generateIBAN()),
-                    new StringBuilder(command.getCurrency()),
-                    command.getInterestRate());
+                    new StringBuilder(command.getCurrency()));
         } else {
             account = new SavingsAccount(temp,
                     new StringBuilder(Utils.generateIBAN()),
@@ -40,8 +39,12 @@ public class AddAccount implements  Command {
                     command.getInterestRate());
         }
 
+
+        System.out.println(account.getType().toString());
+
+
+
         temp.addAccount(account);
-        System.out.println(account.getIBAN().toString());
         String IBAN = account.getIBAN().toString();
         map.put(IBAN, account);
         AccountCreation creation = new AccountCreation(command.getTimestamp());

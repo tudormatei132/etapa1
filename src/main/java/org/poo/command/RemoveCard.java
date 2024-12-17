@@ -28,6 +28,7 @@ public class RemoveCard implements Command {
                                     temp.getAccount().getUser().getEmail().toString(),
                                     temp.getAccount().getIBAN().toString());
         temp.getAccount().getUser().getTransactions().add(removed);
+        temp.getAccount().getTransactions().add(removed);
         temp.getAccount().removeCard(temp);
         cards.remove(temp.getCardNumber().toString());
     }

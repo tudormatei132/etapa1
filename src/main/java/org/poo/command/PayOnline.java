@@ -7,11 +7,16 @@ import org.poo.account.Card;
 import org.poo.account.OneTimeCard;
 import org.poo.system.Converter;
 
+import org.poo.transactions.CardCreation;
+import org.poo.transactions.CardDestruction;
 import org.poo.transactions.Payment;
 import org.poo.transactions.Transaction;
 import org.poo.utils.Utils;
 
 import java.util.HashMap;
+
+import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 public class PayOnline implements Command {
 
@@ -56,7 +61,6 @@ public class PayOnline implements Command {
             output.add(doesntExist);
             return;
         }
-        amount = amount * converter.convert(currency, card.getAccount().getCurrency().toString());
 
         String correspondingEmail = card.getAccount().getUser().getEmail().toString();
 
@@ -64,6 +68,10 @@ public class PayOnline implements Command {
         if (!correspondingEmail.equals(email)) {
             return;
         }
+
+        amount = amount * converter.convert(currency, card.getAccount().getCurrency().toString());
+
+
         if (Double.compare(card.getAccount().getBalance() - card.getAccount().getMinBalance(),
                 amount) < 0) {
             Transaction error = new Transaction(timestamp, "Insufficient funds");
@@ -86,9 +94,18 @@ public class PayOnline implements Command {
         card.getAccount().getUser().getTransactions().add(new_payment);
 
         card.use(amount);
-        if (card.getStatus().toString().equals("inactive")) {
+        if (card.getStatus().toString().equals("mustBeReplaced")) {
+            CardDestruction oldCardDestruction = new CardDestruction(timestamp, card.getCardNumber().toString(),
+                                                    card.getAccount().getUser().getEmail().toString(), card.getAccount().getIBAN().toString());
+            card.getAccount().getTransactions().add(oldCardDestruction);
+            card.getAccount().getUser().getTransactions().add(oldCardDestruction);
             cardMap.remove(card.getCardNumber().toString());
             card.setCardNumber(new StringBuilder(Utils.generateCardNumber()));
+            card.setStatus(new StringBuilder("active"));
+            CardCreation newCard = new CardCreation(timestamp, card.getCardNumber().toString(),
+                                    card.getAccount().getUser().getEmail().toString(), card.getAccount().getIBAN().toString());
+            card.getAccount().getTransactions().add(newCard);
+            card.getAccount().getUser().getTransactions().add(newCard);
             cardMap.put(card.getCardNumber().toString(), card);
         }
 

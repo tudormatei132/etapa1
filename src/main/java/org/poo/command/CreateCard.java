@@ -12,14 +12,19 @@ public class CreateCard implements Command {
     private Account account;
     private HashMap<String, Card> cardMap;
     private int timestamp;
+    private String email;
     public CreateCard(final Account account, final HashMap<String, Card> cardMap,
-                      final int timestamp) {
+                      final int timestamp, final String email) {
         this.account = account;
         this.cardMap = cardMap;
         this.timestamp = timestamp;
+        this.email = email;
     }
 
     public void execute() {
+        if (!account.getUser().getEmail().toString().equals(email)) {
+            return;
+        }
         Card temp = new Card(new StringBuilder(Utils.generateCardNumber()), account);
         account.AddCard(temp);
         String cardNumber = temp.getCardNumber().toString();

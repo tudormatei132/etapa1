@@ -28,8 +28,28 @@ public class SpendingsReport implements Command {
     @Override
     public void execute() {
         if (account == null) {
+            ObjectNode error = mapper.createObjectNode();
+            ObjectNode details = mapper.createObjectNode();
+            error.put("command", "spendingsReport");
+            details.put("description", "Account not found");
+            details.put("timestamp", timestamp);
+            error.put("output", details);
+            error.put("timestamp", timestamp);
+            output.add(error);
             return;
         }
+
+        if (account.getType().toString().equals("savings")) {
+            ObjectNode error = mapper.createObjectNode();
+            error.put("command", "spendingsReport");
+            ObjectNode details = mapper.createObjectNode();
+            details.put("error", "This kind of report is not supported for a saving account");
+            error.put("output", details);
+            error.put("timestamp", timestamp);
+            output.add(error);
+            return;
+        }
+
         ArrayList<Payment> payments = account.getPayments(start, end);
         HashMap<String, Double> spendings = new HashMap<>();
         ArrayList<CommerciantSpendings> commerciants = new ArrayList<>();

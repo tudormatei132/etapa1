@@ -59,6 +59,7 @@ public final class Main {
                 action(file.getName(), filepath);
             }
             System.out.println("-------------" + Integer.toString(i) + "---------------");
+
             i++;
         }
 

@@ -1,5 +1,7 @@
 package org.poo.account;
 
+import org.poo.utils.Utils;
+
 public class OneTimeCard extends Card {
 
 
@@ -9,7 +11,7 @@ public class OneTimeCard extends Card {
 
     public void use(double amount) {
         getAccount().addFunds(-amount);
-        setStatus(new StringBuilder("inactive"));
+        setStatus(new StringBuilder("mustBeReplaced"));
     }
 
 }

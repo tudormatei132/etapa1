@@ -19,19 +19,16 @@ public class Account {
     private StringBuilder IBAN;
     private StringBuilder currency;
     private StringBuilder type;
-    private double interestRate;
     private double balance;
     private ArrayList<Card> cards;
     private double minBalance;
     private ArrayList<Transaction> transactions;
     private ArrayList<Payment> payments;
     private HashMap<String, Double> moneySpent;
-    public Account(final User user, final StringBuilder IBAN, final StringBuilder currency,
-                   final double interestRate) {
+    public Account(final User user, final StringBuilder IBAN, final StringBuilder currency) {
         this.user = user;
         this.IBAN = IBAN;
         this.currency = currency;
-        this.interestRate = interestRate;
         this.balance = 0;
         cards = new ArrayList<>();
         minBalance = 0;
@@ -95,6 +92,8 @@ public class Account {
         return result;
     }
 
-
+    public int setInterestRate(final double rate) {
+        return -1;
+    }
 
 }

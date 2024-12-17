@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
 import org.poo.fileio.CommandInput;
+import org.poo.transactions.NonNullBalance;
 
 import java.util.HashMap;
 
@@ -46,6 +47,9 @@ public class DeleteAccount implements Command {
             error.put("error", "Account couldn't be deleted - see org.poo.transactions for details");
             error.put("timestamp", timestamp);
             node.put("output", error);
+            NonNullBalance deletionFailed = new NonNullBalance(timestamp);
+            temp.getTransactions().add(deletionFailed);
+            temp.getUser().getTransactions().add(deletionFailed);
         }
         output.add(node);
     }

@@ -28,6 +28,14 @@ public class PrintReport implements Command {
     @Override
     public void execute() {
         if (account == null) {
+            ObjectNode error = mapper.createObjectNode();
+            ObjectNode details = mapper.createObjectNode();
+            error.put("command", "report");
+            details.put("description", "Account not found");
+            details.put("timestamp", timestamp);
+            error.put("output", details);
+            error.put("timestamp", timestamp);
+            output.add(error);
             return;
         }
         ArrayList<Transaction> transactions = account.getTransactions(start, stop);

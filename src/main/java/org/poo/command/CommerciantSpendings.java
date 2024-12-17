@@ -18,7 +18,7 @@ public class CommerciantSpendings implements Comparable<CommerciantSpendings> {
 
     @Override
     public int compareTo(CommerciantSpendings o) {
-        return -Double.compare(this.total, o.total);
+        return commerciant.compareTo(o.getCommerciant());
     }
 
     public ObjectNode print(ObjectMapper mapper) {

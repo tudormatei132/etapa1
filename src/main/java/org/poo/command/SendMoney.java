@@ -44,6 +44,9 @@ public class SendMoney implements Command {
         if (senderAccount == null) {
             return;
         }
+
+
+
         Account receiverAccount = user.getAliases().get(receiver);
         if (receiverAccount == null) {
             receiverAccount = accountMap.get(receiver);
@@ -63,7 +66,7 @@ public class SendMoney implements Command {
             return;
         }
 
-        if (senderAccount.getBalance() - senderAccount.getMinBalance() < amount) {
+        if (senderAccount.getBalance() - senderAccount.getMinBalance() <= amount) {
             Transaction transaction = new Transaction(timestamp, "Insufficient funds");
             senderAccount.getUser().getTransactions().add(transaction);
             senderAccount.getTransactions().add(transaction);
@@ -71,14 +74,21 @@ public class SendMoney implements Command {
         }
 
         senderAccount.addFunds(-amount);
-        receiverAccount.addFunds(amount * converter.convert(senderAccount.getCurrency().toString(),
-                receiverAccount.getCurrency().toString()));
+        double converted = amount * converter.convert(senderAccount.getCurrency().toString(),
+                receiverAccount.getCurrency().toString());
+        receiverAccount.addFunds(converted);
 
         Transfer transfer = new Transfer(timestamp, description,
                 Double.toString(amount) + " " + senderAccount.getCurrency(), "sent",
                 senderAccount.getIBAN().toString(), receiverAccount.getIBAN().toString());
         senderAccount.getTransactions().add(transfer);
         senderAccount.getUser().getTransactions().add(transfer);
+
+        Transfer receivedMoney = new Transfer(timestamp, description, Double.toString(converted) + " " +
+                                    receiverAccount.getCurrency(), "received", senderAccount.getIBAN().toString(),
+                                    receiverAccount.getIBAN().toString());
+        receiverAccount.getTransactions().add(receivedMoney);
+        receiverAccount.getUser().getTransactions().add(receivedMoney);
 
     }
 }

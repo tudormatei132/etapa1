@@ -3,6 +3,7 @@ package org.poo.command;
 import org.poo.account.Account;
 import org.poo.system.Converter;
 import org.poo.transactions.SplitPay;
+import org.poo.transactions.SplitPaymentError;
 import org.poo.transactions.Transaction;
 
 import java.util.ArrayList;
@@ -40,11 +41,13 @@ public class SplitPayment implements Command {
             }
         }
         int len = accountArray.size();
-        for (Account acc : accountArray) {
+        String description = String.format("Split payment of %.2f %s", amount, currency);
+        for (Account acc : accountArray.reversed()) {
             double convertedAmount = amount *
                                      converter.convert(currency, acc.getCurrency().toString());
             if (convertedAmount / len > (acc.getBalance() - acc.getMinBalance())) {
-                Transaction error = new Transaction(timestamp, "Insufficient funds");
+                SplitPaymentError error = new SplitPaymentError(timestamp, description, amount/len,
+                        currency, accounts, acc.getIBAN().toString());
                 for (Account it : accountArray) {
                     it.getTransactions().add(error);
                     it.getUser().getTransactions().add(error);
@@ -52,7 +55,7 @@ public class SplitPayment implements Command {
                 return;
             }
         }
-        String description = String.format("Split payment of %.2f %s", amount, currency);
+
         SplitPay split = new SplitPay(timestamp, description, currency, accounts, amount / len);
         for (Account acc : accountArray) {
             double convertedAmount = amount / len *

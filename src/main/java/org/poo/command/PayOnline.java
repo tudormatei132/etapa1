@@ -2,9 +2,8 @@ package org.poo.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Card;
-import org.poo.account.OneTimeCard;
+import org.poo.errors.Log;
 import org.poo.system.Converter;
 
 import org.poo.transactions.CardCreation;
@@ -14,9 +13,6 @@ import org.poo.transactions.Transaction;
 import org.poo.utils.Utils;
 
 import java.util.HashMap;
-
-import static java.lang.System.exit;
-import static java.lang.System.setOut;
 
 public class PayOnline implements Command {
 
@@ -51,14 +47,10 @@ public class PayOnline implements Command {
 
     public void execute() {
         if (card == null) {
-            ObjectNode doesntExist = mapper.createObjectNode();
-            doesntExist.put("command", "payOnline");
-            doesntExist.put("timestamp", timestamp);
-            ObjectNode info = mapper.createObjectNode();
-            info.put("timestamp", timestamp);
-            info.put("description", "Card not found");
-            doesntExist.put("output", info);
-            output.add(doesntExist);
+            Log log = new Log.Builder("payOnline", timestamp).detailsTimestamp(timestamp).
+                          description("Card not found").build();
+
+            output.add(log.print(mapper));
             return;
         }
 

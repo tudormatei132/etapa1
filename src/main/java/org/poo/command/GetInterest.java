@@ -3,10 +3,9 @@ package org.poo.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
 import org.poo.account.SavingsAccount;
-import org.poo.transactions.Transaction;
+import org.poo.errors.Log;
 
 public class GetInterest implements Command {
 
@@ -29,14 +28,10 @@ public class GetInterest implements Command {
         }
 
         if (!savingsAccount.getType().toString().equals("savings")) {
-            ObjectNode error = mapper.createObjectNode();
-            error.put("command", "addInterest");
-            ObjectNode errorOutput = mapper.createObjectNode();
-            errorOutput.put("timestamp", timestamp);
-            errorOutput.put("description", "This is not a savings account");
-            error.put("output", errorOutput);
-            error.put("timestamp", timestamp);
-            output.add(error);
+            Log log = new Log.Builder("addInterest", timestamp).
+                    detailsTimestamp(timestamp).
+                    description("This is not a savings account").build();
+            output.add(log.print(mapper));
             return;
         }
 

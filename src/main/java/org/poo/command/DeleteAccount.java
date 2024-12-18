@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
+import org.poo.errors.Log;
 import org.poo.fileio.CommandInput;
 import org.poo.transactions.NonNullBalance;
 
@@ -32,25 +33,25 @@ public class DeleteAccount implements Command {
         if (temp == null) {
             return;
         }
-        ObjectNode node = mapper.createObjectNode();
-        node.put("command", "deleteAccount");
-        node.put("timestamp", timestamp);
+
+
         if (temp.getBalance() == 0) {
             temp.getUser().removeAccount(temp);
             map.remove(command.getAccount());
-            ObjectNode succes = mapper.createObjectNode();
-            succes.put("success", "Account deleted");
-            succes.put("timestamp", timestamp);
-            node.put("output", succes);
-        } else {
-            ObjectNode error = mapper.createObjectNode();
-            error.put("error", "Account couldn't be deleted - see org.poo.transactions for details");
-            error.put("timestamp", timestamp);
-            node.put("output", error);
-            NonNullBalance deletionFailed = new NonNullBalance(timestamp);
-            temp.getTransactions().add(deletionFailed);
-            temp.getUser().getTransactions().add(deletionFailed);
+            Log succes = new Log.Builder("deleteAccount", timestamp).
+                         detailsTimestamp(timestamp).success("Account deleted").build();
+            output.add(succes.print(mapper));
+            return;
         }
-        output.add(node);
+
+        Log log = new Log.Builder("deleteAccount", timestamp).detailsTimestamp(timestamp)
+                .error("Account couldn't be deleted - see org.poo.transactions " +
+                                      "for details").build();
+        output.add(log.print(mapper));
+
+
+        NonNullBalance deletionFailed = new NonNullBalance(timestamp);
+        temp.getTransactions().add(deletionFailed);
+        temp.getUser().getTransactions().add(deletionFailed);
     }
 }

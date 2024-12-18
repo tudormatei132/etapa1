@@ -12,6 +12,4 @@ public class Edge {
         this.to = to;
         this.rate = rate;
     }
-
-
 }

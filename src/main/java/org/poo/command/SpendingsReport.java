@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
+import org.poo.errors.Log;
 import org.poo.transactions.Payment;
 
 import java.util.*;
@@ -28,25 +29,18 @@ public class SpendingsReport implements Command {
     @Override
     public void execute() {
         if (account == null) {
-            ObjectNode error = mapper.createObjectNode();
-            ObjectNode details = mapper.createObjectNode();
-            error.put("command", "spendingsReport");
-            details.put("description", "Account not found");
-            details.put("timestamp", timestamp);
-            error.put("output", details);
-            error.put("timestamp", timestamp);
-            output.add(error);
+            Log log = new Log.Builder("spendingsReport", timestamp).
+                            detailsTimestamp(timestamp).description("Account not found").build();
+
+            output.add(log.print(mapper));
             return;
         }
 
         if (account.getType().toString().equals("savings")) {
-            ObjectNode error = mapper.createObjectNode();
-            error.put("command", "spendingsReport");
-            ObjectNode details = mapper.createObjectNode();
-            details.put("error", "This kind of report is not supported for a saving account");
-            error.put("output", details);
-            error.put("timestamp", timestamp);
-            output.add(error);
+            Log log = new Log.Builder("spendingsReport", timestamp).
+                    error("This kind of report is not supported for a saving account").build();
+
+            output.add(log.print(mapper));
             return;
         }
 

@@ -23,7 +23,4 @@ public class Payment extends Transaction  {
         result.put("commerciant", commerciant);
         return result;
     }
-
-
-
 }

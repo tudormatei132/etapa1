@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
+import org.poo.errors.Log;
 import org.poo.transactions.Transaction;
 
 import java.util.ArrayList;
@@ -28,14 +29,9 @@ public class PrintReport implements Command {
     @Override
     public void execute() {
         if (account == null) {
-            ObjectNode error = mapper.createObjectNode();
-            ObjectNode details = mapper.createObjectNode();
-            error.put("command", "report");
-            details.put("description", "Account not found");
-            details.put("timestamp", timestamp);
-            error.put("output", details);
-            error.put("timestamp", timestamp);
-            output.add(error);
+            Log log = new Log.Builder("report", timestamp).
+                    description("Account not found").detailsTimestamp(timestamp).build();
+            output.add(log.print(mapper));
             return;
         }
         ArrayList<Transaction> transactions = account.getTransactions(start, stop);

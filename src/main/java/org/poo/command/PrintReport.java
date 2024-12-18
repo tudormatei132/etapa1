@@ -30,7 +30,7 @@ public class PrintReport implements Command {
     public void execute() {
         if (account == null) {
             Log log = new Log.Builder("report", timestamp).
-                    description("Account not found").detailsTimestamp(timestamp).build();
+                    setDescription("Account not found").setDetailsTimestamp(timestamp).build();
             output.add(log.print(mapper));
             return;
         }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.User;
+import org.poo.errors.Log;
 import org.poo.transactions.Transaction;
 
 public class PrintTransactions implements Command {
@@ -22,6 +23,9 @@ public class PrintTransactions implements Command {
 
     public void execute() {
         if (user == null) {
+            Log error = new Log.Builder("printTransactions", timestamp).setDetailsTimestamp(timestamp)
+                            .setError("User not found").build();
+            output.add(error.print(mapper));
             return;
         }
         ObjectNode node = mapper.createObjectNode();

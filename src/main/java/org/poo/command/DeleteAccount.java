@@ -2,7 +2,6 @@ package org.poo.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Account;
 import org.poo.errors.Log;
 import org.poo.fileio.CommandInput;
@@ -31,24 +30,25 @@ public class DeleteAccount implements Command {
     public void execute() {
         Account temp = map.get(command.getAccount());
         if (temp == null) {
+            Log error = new Log.Builder("deleteAccount", timestamp).
+                    setError("Couldn't find account").build();
+            output.add(error.print(mapper));
             return;
         }
-
 
         if (temp.getBalance() == 0) {
             temp.getUser().removeAccount(temp);
             map.remove(command.getAccount());
             Log succes = new Log.Builder("deleteAccount", timestamp).
-                         detailsTimestamp(timestamp).success("Account deleted").build();
+                    setDetailsTimestamp(timestamp).setSucces("Account deleted").build();
             output.add(succes.print(mapper));
             return;
         }
 
-        Log log = new Log.Builder("deleteAccount", timestamp).detailsTimestamp(timestamp)
-                .error("Account couldn't be deleted - see org.poo.transactions " +
-                                      "for details").build();
+        Log log = new Log.Builder("deleteAccount", timestamp).setDetailsTimestamp(timestamp)
+                .setError("Account couldn't be deleted - see org.poo.transactions " +
+                        "for details").build();
         output.add(log.print(mapper));
-
 
         NonNullBalance deletionFailed = new NonNullBalance(timestamp);
         temp.getTransactions().add(deletionFailed);

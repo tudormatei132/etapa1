@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class CardDestruction extends CardCreation {
 
-    public CardDestruction(final int timestamp, final String card, final String cardHolder, final String account) {
+    public CardDestruction(final int timestamp, final String card, final String cardHolder,
+                           final String account) {
         super(timestamp, card, cardHolder, account);
         setDescription("The card has been destroyed");
     }
 
-    public ObjectNode print(ObjectMapper mapper) {
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("description", getDescription());
         result.put("card", getCard());

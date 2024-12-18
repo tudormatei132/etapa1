@@ -16,6 +16,7 @@ public class CommandHandler {
     private final SystemManager system;
     private final ArrayNode output;
     private final ObjectMapper mapper;
+
     public CommandHandler(final SystemManager system, final ObjectMapper mapper, ArrayNode output) {
         this.system = system;
         this.mapper = mapper;
@@ -25,119 +26,102 @@ public class CommandHandler {
 
     public void execute(CommandInput input) {
         Command command;
-        try {
-            command = getCommand(input);
-            if (command == null) {
-                throw new IllegalArgumentException();
-            } else {
-                command.execute();
-            }
-        } catch (IllegalArgumentException ex) {
-            System.out.println("Invalid command");
+        command = getCommand(input);
+        if (command != null) {
+            command.execute();
         }
-
     }
 
-    private Command getCommand(CommandInput command) throws IllegalArgumentException {
+    private Command getCommand(CommandInput command) {
         switch (command.getCommand()) {
-            case "addAccount": {
+            case "addAccount":
                 return new AddAccount(command, system.getUserMap(), system.getMap());
-            }
 
-            case "deleteAccount": {
+
+            case "deleteAccount":
                 return new DeleteAccount(command, system.getMap(), mapper, output);
-            }
 
 
-            case "printUsers": {
+            case "printUsers":
                 return new PrintUsers(system.getUsers(), mapper, command.getTimestamp(), output);
-            }
 
-            case "createCard": {
+            case "createCard":
                 return new CreateCard(system.getMap().get(command.getAccount()),
                         system.getCardMap(), command.getTimestamp(), command.getEmail());
-            }
 
-            case "addFunds": {
-                return new AddFunds(system.getMap().get(command.getAccount()), command.getAmount());
-            }
+            case "addFunds":
+                return new AddFunds(system.getMap().get(command.getAccount()),
+                        command.getAmount(), command.getTimestamp());
 
-            case "createOneTimeCard": {
+            case "createOneTimeCard":
                 return new CreateOneTimeCard(system.getMap().get(command.getAccount()),
                         system.getCardMap(), command.getTimestamp());
-            }
 
-            case "deleteCard": {
+            case "deleteCard":
                 return new RemoveCard(command.getCardNumber(), system.getCardMap(),
                                       command.getTimestamp());
-            }
 
-            case "payOnline": {
+
+            case "payOnline":
                 return new PayOnline(system.getCardMap().get(command.getCardNumber()),
                         command.getAmount(), command.getCurrency(), command.getEmail(),
                         output, mapper, command.getTimestamp(), system.getCardMap(),
                         system.getConverter(), command.getCommerciant());
-            }
 
-            case "sendMoney": {
-                Account receiver = system.getMap().get(command.getReceiver());
-                if (receiver == null) {
-                    if (system.getMap().get(command.getAccount()) != null) {
-                        receiver = system.getMap().get(command.getAccount());
-                    }
-                }
+
+            case "sendMoney":
                 return new SendMoney(command.getDescription(), system.getUserMap().get(command.getEmail()), command.getAmount(),
                         system.getConverter(), command.getAccount(), command.getReceiver(), command.getTimestamp(),
                         system.getMap());
-            }
 
-            case "printTransactions": {
+
+            case "printTransactions":
                 return new PrintTransactions(system.getUserMap().get(command.getEmail()),
                         output, mapper, command.getTimestamp());
-            }
 
-            case "checkCardStatus": {
+
+            case "checkCardStatus":
                 return new CheckCardStatus(system.getCardMap().get(command.getCardNumber()),
                         command.getTimestamp(), output, mapper);
-            }
 
-            case "setMinBalance": {
+
+            case "setMinBalance":
                 return new SetMinimumBalance(command.getAmount(),
                         system.getMap().get(command.getAccount()));
-            }
 
-            case "setAlias": {
+
+            case "setAlias":
                 return new SetAlias(command.getAlias(), system.getMap().get(command.getAccount()),
                         system.getUserMap().get(command.getEmail()));
-            }
 
-            case "splitPayment": {
+
+            case "splitPayment":
                 return new SplitPayment(command.getAccounts(), command.getTimestamp(),
                         command.getCurrency(), command.getAmount(), system.getMap(),
                         system.getConverter());
-            }
 
-            case "report": {
+
+            case "report":
                 return new PrintReport(system.getMap().get(command.getAccount()),
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
-            }
 
-            case "spendingsReport": {
+
+            case "spendingsReport":
                 return new SpendingsReport(system.getMap().get(command.getAccount()),
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
-            }
 
-            case "changeInterestRate": {
+
+            case "changeInterestRate":
                 return new ChangeInterestRate(system.getMap().get(command.getAccount()),
                         command.getInterestRate(), command.getTimestamp(), output, mapper);
-            }
 
-            case "addInterest": {
+
+            case "addInterest":
                 return new GetInterest(system.getMap().get(command.getAccount()),
                         command.getTimestamp(), output, mapper);
-            }
+
         }
         return null;
     }

@@ -15,22 +15,22 @@ public class Log {
             this.timestamp = timestamp;
         }
 
-        public Builder detailsTimestamp(final int timestamp) {
+        public Builder setDetailsTimestamp(final int timestamp) {
             this.detailsTimestamp = timestamp;
             return this;
         }
 
-        public Builder description(final String description) {
+        public Builder setDescription(final String description) {
             this.description = description;
             return this;
         }
 
-        public Builder error(final String error) {
+        public Builder setError(final String error) {
             this.error = error;
             return this;
         }
 
-        public Builder success(final String success) {
+        public Builder setSucces(final String success) {
             this.success = success;
             return this;
         }

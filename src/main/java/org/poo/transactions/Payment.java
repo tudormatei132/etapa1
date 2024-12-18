@@ -9,13 +9,14 @@ public class Payment extends Transaction  {
     private double amount;
     private String commerciant;
 
-    public Payment(int timestamp, String description, double amount, String commerciant) {
+    public Payment(final int timestamp, final String description, final double amount,
+                   final String commerciant) {
         super(timestamp, description);
         this.amount = amount;
         this.commerciant = commerciant;
     }
 
-    public ObjectNode print(ObjectMapper mapper) {
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());
         result.put("description", getDescription());

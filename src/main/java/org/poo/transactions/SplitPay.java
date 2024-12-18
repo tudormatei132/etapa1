@@ -13,14 +13,15 @@ public class SplitPay extends Transaction {
     private List<String> involvedAccounts;
     private double amount;
 
-    public SplitPay(int timestamp, String description, String currency, List<String> involvedAccounts, double amount) {
+    public SplitPay(final int timestamp, final String description, final String currency,
+                    final List<String> involvedAccounts, final double amount) {
         super(timestamp, description);
         this.currency = currency;
         this.involvedAccounts = involvedAccounts;
         this.amount = amount;
     }
 
-    public ObjectNode print(ObjectMapper mapper) {
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());
         result.put("description", getDescription());

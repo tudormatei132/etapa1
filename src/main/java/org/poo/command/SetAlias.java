@@ -2,6 +2,7 @@ package org.poo.command;
 
 import org.poo.account.Account;
 import org.poo.account.User;
+import org.poo.errors.Log;
 
 import java.util.HashMap;
 

@@ -47,8 +47,8 @@ public class PayOnline implements Command {
 
     public void execute() {
         if (card == null) {
-            Log log = new Log.Builder("payOnline", timestamp).detailsTimestamp(timestamp).
-                          description("Card not found").build();
+            Log log = new Log.Builder("payOnline", timestamp).setDetailsTimestamp(timestamp).
+                    setDescription("Card not found").build();
 
             output.add(log.print(mapper));
             return;

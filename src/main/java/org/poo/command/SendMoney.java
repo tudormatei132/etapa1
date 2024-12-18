@@ -31,38 +31,22 @@ public class SendMoney implements Command {
     }
 
     public void execute() {
-        // get sender
-//        Account senderAccount = user.getAliases().get(sender);
-//        if (senderAccount == null) {
-//            senderAccount = accountMap.get(sender);
-//            if (senderAccount == null) {
-//                System.out.println("doesn't exist");
-//                return;
-//            }
-//        }
+
         Account senderAccount = accountMap.get(sender);
         if (senderAccount == null) {
             return;
         }
 
 
-
         Account receiverAccount = user.getAliases().get(receiver);
         if (receiverAccount == null) {
             receiverAccount = accountMap.get(receiver);
             if (receiverAccount == null) {
-                System.out.println("doesn't exist");
-
                 return;
             }
         }
 
-
-
-
-
         if (!senderAccount.getUser().getEmail().toString().equals(user.getEmail().toString())) {
-
             return;
         }
 
@@ -74,6 +58,7 @@ public class SendMoney implements Command {
         }
 
         senderAccount.addFunds(-amount);
+
         double converted = amount * converter.convert(senderAccount.getCurrency().toString(),
                 receiverAccount.getCurrency().toString());
         receiverAccount.addFunds(converted);
@@ -81,12 +66,14 @@ public class SendMoney implements Command {
         Transfer transfer = new Transfer(timestamp, description,
                 Double.toString(amount) + " " + senderAccount.getCurrency(), "sent",
                 senderAccount.getIBAN().toString(), receiverAccount.getIBAN().toString());
+
         senderAccount.getTransactions().add(transfer);
         senderAccount.getUser().getTransactions().add(transfer);
 
         Transfer receivedMoney = new Transfer(timestamp, description, Double.toString(converted) + " " +
                                     receiverAccount.getCurrency(), "received", senderAccount.getIBAN().toString(),
                                     receiverAccount.getIBAN().toString());
+
         receiverAccount.getTransactions().add(receivedMoney);
         receiverAccount.getUser().getTransactions().add(receivedMoney);
 

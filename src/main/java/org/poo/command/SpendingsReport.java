@@ -7,7 +7,11 @@ import org.poo.account.Account;
 import org.poo.errors.Log;
 import org.poo.transactions.Payment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class SpendingsReport implements Command {
 
@@ -30,7 +34,7 @@ public class SpendingsReport implements Command {
     public void execute() {
         if (account == null) {
             Log log = new Log.Builder("spendingsReport", timestamp).
-                            detailsTimestamp(timestamp).description("Account not found").build();
+                    setDetailsTimestamp(timestamp).setDescription("Account not found").build();
 
             output.add(log.print(mapper));
             return;
@@ -38,7 +42,7 @@ public class SpendingsReport implements Command {
 
         if (account.getType().toString().equals("savings")) {
             Log log = new Log.Builder("spendingsReport", timestamp).
-                    error("This kind of report is not supported for a saving account").build();
+                    setError("This kind of report is not supported for a saving account").build();
 
             output.add(log.print(mapper));
             return;

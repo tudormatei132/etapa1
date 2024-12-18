@@ -29,8 +29,8 @@ public class GetInterest implements Command {
 
         if (!savingsAccount.getType().toString().equals("savings")) {
             Log log = new Log.Builder("addInterest", timestamp).
-                    detailsTimestamp(timestamp).
-                    description("This is not a savings account").build();
+                    setDetailsTimestamp(timestamp).
+                    setDescription("This is not a savings account").build();
             output.add(log.print(mapper));
             return;
         }

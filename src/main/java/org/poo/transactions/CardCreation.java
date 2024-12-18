@@ -9,14 +9,15 @@ import lombok.Setter;
 public class CardCreation extends Transaction {
     private String card, cardHolder, account;
 
-    public CardCreation(final int timestamp, final String card, final String cardHolder, final String account) {
+    public CardCreation(final int timestamp, final String card, final String cardHolder,
+                        final String account) {
         super(timestamp, "New card created");
         this.card = card;
         this.cardHolder = cardHolder;
         this.account = account;
     }
 
-    public ObjectNode print(ObjectMapper mapper) {
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());
         result.put("description", getDescription());

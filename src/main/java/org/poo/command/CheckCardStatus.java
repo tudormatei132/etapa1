@@ -2,8 +2,8 @@ package org.poo.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.account.Card;
+import org.poo.errors.Log;
 import org.poo.transactions.Transaction;
 
 public class CheckCardStatus implements Command {
@@ -21,15 +21,12 @@ public class CheckCardStatus implements Command {
     }
 
     public void execute() {
-        ObjectNode checkCard = mapper.createObjectNode();
+
         if (card == null) {
-            checkCard.put("command", "checkCardStatus");
-            ObjectNode error = mapper.createObjectNode();
-            error.put("timestamp", timestamp);
-            error.put("description", "Card not found");
-            checkCard.put("output", error);
-            checkCard.put("timestamp", timestamp);
-            output.add(checkCard);
+            Log error = new Log.Builder("checkCardStatus", timestamp).
+                    setDescription("Card not found").setDetailsTimestamp(timestamp).build();
+
+            output.add(error.print((mapper)));
             return;
         }
         if (card.getStatus().toString().equals("frozen")) {

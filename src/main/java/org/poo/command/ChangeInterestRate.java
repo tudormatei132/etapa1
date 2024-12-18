@@ -34,8 +34,8 @@ public class ChangeInterestRate implements Command {
 
         if (account.setInterestRate(newRate) == -1) {
             Log log = new Log.Builder("changeInterestRate", timestamp).
-                    detailsTimestamp(timestamp).
-                    description("This is not a savings account").build();
+                    setDetailsTimestamp(timestamp).
+                    setDescription("This is not a savings account").build();
 
             output.add(log.print(mapper));
             return;

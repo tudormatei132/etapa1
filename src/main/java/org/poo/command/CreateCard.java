@@ -2,6 +2,7 @@ package org.poo.command;
 
 import org.poo.account.Account;
 import org.poo.account.Card;
+import org.poo.errors.Log;
 import org.poo.transactions.CardCreation;
 import org.poo.utils.Utils;
 
@@ -13,6 +14,7 @@ public class CreateCard implements Command {
     private HashMap<String, Card> cardMap;
     private int timestamp;
     private String email;
+
     public CreateCard(final Account account, final HashMap<String, Card> cardMap,
                       final int timestamp, final String email) {
         this.account = account;

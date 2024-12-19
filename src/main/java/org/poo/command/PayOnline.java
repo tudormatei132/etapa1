@@ -45,6 +45,13 @@ public class PayOnline implements Command {
         this.commerciant = commerciant;
     }
 
+    /**
+     * will check if the card exists and if its owner made the request
+     * if both conditions are met, check if it has enough money and remove funds from
+     * the account balance
+     * will also generate a new card number for a one time pay card if the payment
+     * was successful
+     */
     public void execute() {
         if (card == null) {
             Log log = new Log.Builder("payOnline", timestamp).setDetailsTimestamp(timestamp).
@@ -79,25 +86,33 @@ public class PayOnline implements Command {
             return;
         }
 
-        Payment new_payment = new Payment(timestamp, "Card payment", amount, commerciant);
+        Payment newPayment = new Payment(timestamp, "Card payment", amount, commerciant);
 
-        card.getAccount().getTransactions().add(new_payment);
-        card.getAccount().getPayments().add(new_payment);
-        card.getAccount().getUser().getTransactions().add(new_payment);
+        card.getAccount().getTransactions().add(newPayment);
+        card.getAccount().getPayments().add(newPayment);
+        card.getAccount().getUser().getTransactions().add(newPayment);
 
         card.use(amount);
         if (card.getStatus().toString().equals("mustBeReplaced")) {
-            CardDestruction oldCardDestruction = new CardDestruction(timestamp, card.getCardNumber().toString(),
-                                                    card.getAccount().getUser().getEmail().toString(), card.getAccount().getIBAN().toString());
+            CardDestruction oldCardDestruction = new CardDestruction(timestamp,
+                                                 card.getCardNumber().toString(),
+                                                 card.getAccount().getUser().getEmail().toString(),
+                                                 card.getAccount().getIban().toString());
+
             card.getAccount().getTransactions().add(oldCardDestruction);
             card.getAccount().getUser().getTransactions().add(oldCardDestruction);
+
             cardMap.remove(card.getCardNumber().toString());
+
             card.setCardNumber(new StringBuilder(Utils.generateCardNumber()));
             card.setStatus(new StringBuilder("active"));
+
             CardCreation newCard = new CardCreation(timestamp, card.getCardNumber().toString(),
-                                    card.getAccount().getUser().getEmail().toString(), card.getAccount().getIBAN().toString());
+                                    card.getAccount().getUser().getEmail().toString(),
+                                    card.getAccount().getIban().toString());
             card.getAccount().getTransactions().add(newCard);
             card.getAccount().getUser().getTransactions().add(newCard);
+
             cardMap.put(card.getCardNumber().toString(), card);
         }
 

@@ -15,8 +15,8 @@ public class ChangeInterestRate implements Command {
     private ArrayNode output;
     private ObjectMapper mapper;
 
-    public ChangeInterestRate(Account account, double newRate, int timestamp,
-                              ArrayNode output, ObjectMapper mapper) {
+    public ChangeInterestRate(final Account account, final double newRate, final int timestamp,
+                              final ArrayNode output, final ObjectMapper mapper) {
         this.account = account;
         this.newRate = newRate;
         this.timestamp = timestamp;
@@ -24,12 +24,17 @@ public class ChangeInterestRate implements Command {
         this.mapper = mapper;
     }
 
+    /**
+     * will try to change the interest rate of an account if it's a savings account of it exists
+     */
     @Override
     public void execute() {
         if (account == null) {
+            Log error = new Log.Builder("changeInterestRate", timestamp).
+                            setDetailsTimestamp(timestamp).setError("Account not found").build();
+            output.add(error.print(mapper));
             return;
         }
-
 
 
         if (account.setInterestRate(newRate) == -1) {
@@ -41,8 +46,8 @@ public class ChangeInterestRate implements Command {
             return;
         }
 
-        Transaction newInterestRate = new Transaction(timestamp, "Interest rate of " +
-                "the account changed to " + newRate);
+        Transaction newInterestRate = new Transaction(timestamp, "Interest rate of "
+                + "the account changed to " + newRate);
         account.getTransactions().add(newInterestRate);
         account.getUser().getTransactions().add(newInterestRate);
 

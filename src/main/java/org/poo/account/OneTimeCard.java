@@ -1,15 +1,19 @@
 package org.poo.account;
 
-import org.poo.utils.Utils;
+
 
 public class OneTimeCard extends Card {
 
 
-    public OneTimeCard(StringBuilder cardNumber, Account account) {
+    public OneTimeCard(final StringBuilder cardNumber, final Account account) {
         super(cardNumber, account);
     }
 
-    public void use(double amount) {
+    /**
+     * used to mark that the card needs to be replaced
+     * @param amount the amount that will be extracted from the account
+     */
+    public void use(final double amount) {
         getAccount().addFunds(-amount);
         setStatus(new StringBuilder("mustBeReplaced"));
     }

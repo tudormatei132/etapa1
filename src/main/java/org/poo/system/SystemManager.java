@@ -3,18 +3,18 @@ package org.poo.system;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
-import org.poo.account.*;
+import org.poo.account.Account;
+import org.poo.account.Card;
+import org.poo.account.User;
 import org.poo.command.CommandHandler;
 import org.poo.fileio.CommandInput;
 import org.poo.fileio.ExchangeInput;
 import org.poo.fileio.ObjectInput;
 import org.poo.fileio.UserInput;
-import org.poo.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
 @Getter
 public class SystemManager {
 
@@ -35,7 +35,13 @@ public class SystemManager {
     }
 
 
-
+    /**
+     * this is the main method of the program, it basically gets the basic information of the input
+     * then it starts passing commands to the CommandHandler
+     * @param input the given input which will be used to extract users, rates and the commands
+     * @param mapper the mapper used to create different nodes for printing
+     * @param output the output node that will be printed after execution
+     */
     public void run(final ObjectInput input, final ObjectMapper mapper, final ArrayNode output) {
         for (UserInput user : input.getUsers()) {
             User toBeAdded = new User(user);

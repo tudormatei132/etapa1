@@ -14,13 +14,18 @@ public class GetInterest implements Command {
     private ArrayNode output;
     private ObjectMapper mapper;
 
-    public GetInterest(Account savingsAccount, int timestamp, ArrayNode output, ObjectMapper mapper) {
+    public GetInterest(final Account savingsAccount, final int timestamp, final ArrayNode output,
+                       final ObjectMapper mapper) {
         this.savingsAccount = savingsAccount;
         this.timestamp = timestamp;
         this.output = output;
         this.mapper = mapper;
     }
 
+    /**
+     * checks if the account is a savings account
+     * will add the funds if that's the case
+     */
     @Override
     public void execute() {
         if (savingsAccount == null) {

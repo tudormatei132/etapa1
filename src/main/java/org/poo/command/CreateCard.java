@@ -2,7 +2,6 @@ package org.poo.command;
 
 import org.poo.account.Account;
 import org.poo.account.Card;
-import org.poo.errors.Log;
 import org.poo.transactions.CardCreation;
 import org.poo.utils.Utils;
 
@@ -23,18 +22,24 @@ public class CreateCard implements Command {
         this.email = email;
     }
 
+    /**
+     * creates a card if the request was made by the owner of the account
+     * and adds it to the cardMap and the Array List of the account
+     */
     public void execute() {
         if (!account.getUser().getEmail().toString().equals(email)) {
             return;
         }
         Card temp = new Card(new StringBuilder(Utils.generateCardNumber()), account);
-        account.AddCard(temp);
+        account.addCard(temp);
+
         String cardNumber = temp.getCardNumber().toString();
         cardMap.put(cardNumber, temp);
-        CardCreation new_card = new CardCreation(timestamp, temp.getCardNumber().toString(),
-                account.getUser().getEmail().toString(), account.getIBAN().toString());
-        account.getUser().getTransactions().add(new_card);
-        account.getTransactions().add(new_card);
+
+        CardCreation newCard = new CardCreation(timestamp, temp.getCardNumber().toString(),
+                account.getUser().getEmail().toString(), account.getIban().toString());
+        account.getUser().getTransactions().add(newCard);
+        account.getTransactions().add(newCard);
     }
 
 }

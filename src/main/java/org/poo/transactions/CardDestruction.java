@@ -10,7 +10,11 @@ public class CardDestruction extends CardCreation {
         super(timestamp, card, cardHolder, account);
         setDescription("The card has been destroyed");
     }
-
+    /**
+     * will print the details of the transaction
+     * @param mapper used to create the ObjectNode
+     * @return the node which will be added to the output node
+     */
     public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("description", getDescription());

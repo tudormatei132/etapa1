@@ -7,6 +7,7 @@ public class Log {
 
     private String command, error, description, success;
     private int timestamp, detailsTimestamp;
+
     public static class Builder {
         private String command, error = null, description = null, success = null;
         private int timestamp, detailsTimestamp = 0;
@@ -15,33 +16,55 @@ public class Log {
             this.timestamp = timestamp;
         }
 
-        public Builder setDetailsTimestamp(final int timestamp) {
-            this.detailsTimestamp = timestamp;
+        /**
+         * sets the optional field to the given value
+         * @param timestampInt the timestamp used in the "output" section of the command output
+         * @return a Builder with the parameter set
+         */
+        public Builder setDetailsTimestamp(final int timestampInt) {
+            this.detailsTimestamp = timestampInt;
+            return this;
+        }
+        /**
+         * sets the optional field to the given value
+         * @param descriptionText the "description" used in the "output" section of the
+         *                        command output
+         * @return a Builder with the parameter set
+         */
+        public Builder setDescription(final String descriptionText) {
+            this.description = descriptionText;
+            return this;
+        }
+        /**
+         * sets the optional field to the given value
+         * @param errorText the error used in the "output" section of the command output
+         * @return a Builder with the parameter set
+         */
+        public Builder setError(final String errorText) {
+            this.error = errorText;
+            return this;
+        }
+        /**
+         * sets the optional field to the given value
+         * @param successText the success text used in the "output" section of the command output
+         * @return a Builder with the parameter set
+         */
+        public Builder setSuccess(final String successText) {
+            this.success = successText;
             return this;
         }
 
-        public Builder setDescription(final String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setError(final String error) {
-            this.error = error;
-            return this;
-        }
-
-        public Builder setSucces(final String success) {
-            this.success = success;
-            return this;
-        }
-
+        /**
+         * will call the constructor of the main class to generate a new instance of it
+         * @return a Log after setting the parameters
+         */
         public Log build() {
             return new Log(this);
         }
 
     }
 
-    public Log(Builder builder) {
+    public Log(final Builder builder) {
         this.command = builder.command;
         this.error = builder.error;
         this.timestamp = builder.timestamp;
@@ -50,7 +73,13 @@ public class Log {
         this.success = builder.success;
     }
 
-    public ObjectNode print(ObjectMapper mapper) {
+    /**
+     * adds the log to the output node
+     * checks which parameters were set
+     * @param mapper mapper used to create the ObjectNode
+     * @return ObjectNode with the text of the error
+     */
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode errorNode = mapper.createObjectNode();
         errorNode.put("command", command);
         ObjectNode details = mapper.createObjectNode();

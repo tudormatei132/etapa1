@@ -19,8 +19,10 @@ public class SpendingsReport implements Command {
     private int start, end, timestamp;
     private ArrayNode output;
     private ObjectMapper mapper;
-    public SpendingsReport(Account account, int start, int end, ArrayNode output,
-                           ObjectMapper mapper, int timestamp) {
+
+    public SpendingsReport(final Account account, final int start, final int end,
+                           final ArrayNode output, final ObjectMapper mapper,
+                           final int timestamp) {
         this.account = account;
         this.start = start;
         this.end = end;
@@ -29,7 +31,13 @@ public class SpendingsReport implements Command {
         this.timestamp = timestamp;
     }
 
-
+    /**
+     * adds the spendings report for the account to the output node
+     * will create a HashMap for spendings so it can get the total of money given
+     * to every commerciant, then will use a List of CommerciantSpendings that will be
+     * filled using the HashMap
+     * then, it will print every payment from the Account and the total for every commerciant
+     */
     @Override
     public void execute() {
         if (account == null) {
@@ -53,10 +61,9 @@ public class SpendingsReport implements Command {
         ArrayList<CommerciantSpendings> commerciants = new ArrayList<>();
         for (Payment payment : payments) {
             if (spendings.containsKey(payment.getCommerciant())) {
-                double new_amount = spendings.get(payment.getCommerciant()) + payment.getAmount();
-                spendings.put(payment.getCommerciant(), new_amount);
-            }
-            else {
+                double newAmount = spendings.get(payment.getCommerciant()) + payment.getAmount();
+                spendings.put(payment.getCommerciant(), newAmount);
+            } else {
                 spendings.put(payment.getCommerciant(), payment.getAmount());
             }
         }
@@ -70,7 +77,7 @@ public class SpendingsReport implements Command {
         ObjectNode report = mapper.createObjectNode();
         report.put("command", "spendingsReport");
         ObjectNode accountDetails = mapper.createObjectNode();
-        accountDetails.put("IBAN", account.getIBAN().toString());
+        accountDetails.put("IBAN", account.getIban().toString());
         accountDetails.put("balance", account.getBalance());
         accountDetails.put("currency", account.getCurrency().toString());
         ArrayNode transactions = mapper.createArrayNode();

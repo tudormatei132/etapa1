@@ -2,14 +2,8 @@ package org.poo.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.poo.account.Account;
-import org.poo.account.Card;
-import org.poo.account.User;
 import org.poo.fileio.CommandInput;
 import org.poo.system.SystemManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CommandHandler {
 
@@ -17,14 +11,18 @@ public class CommandHandler {
     private final ArrayNode output;
     private final ObjectMapper mapper;
 
-    public CommandHandler(final SystemManager system, final ObjectMapper mapper, ArrayNode output) {
+    public CommandHandler(final SystemManager system, final ObjectMapper mapper,
+                          final ArrayNode output) {
         this.system = system;
         this.mapper = mapper;
         this.output = output;
     }
 
-
-    public void execute(CommandInput input) {
+    /**
+     * will execute the command given by the Command Factory below
+     * @param input the input used to determine which command to use
+     */
+    public void execute(final CommandInput input) {
         Command command;
         command = getCommand(input);
         if (command != null) {
@@ -32,7 +30,13 @@ public class CommandHandler {
         }
     }
 
-    private Command getCommand(CommandInput command) {
+
+    /**
+     * gets an instance of the correct command
+     * @param command the input that will be used to determine which command to use
+     * @return the instance of the correct command
+     */
+    private Command getCommand(final CommandInput command) {
         switch (command.getCommand()) {
             case "addAccount":
                 return new AddAccount(command, system.getUserMap(), system.getMap());
@@ -70,9 +74,10 @@ public class CommandHandler {
 
 
             case "sendMoney":
-                return new SendMoney(command.getDescription(), system.getUserMap().get(command.getEmail()), command.getAmount(),
-                        system.getConverter(), command.getAccount(), command.getReceiver(), command.getTimestamp(),
-                        system.getMap());
+                return new SendMoney(command.getDescription(),
+                        system.getUserMap().get(command.getEmail()), command.getAmount(),
+                        system.getConverter(), command.getAccount(), command.getReceiver(),
+                        command.getTimestamp(), system.getMap());
 
 
             case "printTransactions":
@@ -121,9 +126,10 @@ public class CommandHandler {
             case "addInterest":
                 return new GetInterest(system.getMap().get(command.getAccount()),
                         command.getTimestamp(), output, mapper);
+            default:
+                return null;
 
         }
-        return null;
     }
 
 }

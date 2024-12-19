@@ -13,15 +13,30 @@ public class Converter {
         graph = new CurrencyGraph();
     }
 
-    public void addNewRate(String from, String to, double rate) {
+    /**
+     * adds two edges for both conversions in the graph, one with the given rate and the other one
+     * with a rate of 1 / given rate
+     * @param from the currency we want to convert from
+     * @param to the currency we want to convert to
+     * @param rate the conversion rate from the first to the second currency
+     */
+    public void addNewRate(final String from, final String to, final double rate) {
         Edge edge = new Edge(to, rate);
-        Edge reverseEdge = new Edge(from, 1/rate);
+        Edge reverseEdge = new Edge(from, 1 / rate);
 
         graph.add(from, edge);
         graph.add(to, reverseEdge);
     }
 
-
+    /**
+     * a depth first search that returns the current rate of the stage we are in at a given moment
+     * when we find the wanted currency, return the final rate
+     * @param start the currency where we want to start our new search
+     * @param searched the currency we want to get to
+     * @param visited a set that keeps track of the visited currencies
+     * @param conversionRate it will store our current result
+     * @return the wanted conversionRate if there's a way in our graph between the 2 currencies
+     */
     private double dfs(final String start, final String searched, final HashSet<String> visited,
                      final double conversionRate) {
 
@@ -43,8 +58,13 @@ public class Converter {
         return -1;
     }
 
-
-    public double convert(String from, String to) {
+    /**
+     * declares the HashSet used in the search and returns the result of the dfs method
+     * @param from the starting currency
+     * @param to the final currency
+     * @return the rate between the two
+     */
+    public double convert(final String from, final String to) {
         HashSet<String> visited = new HashSet<>();
         return dfs(from, to, visited, 1);
     }

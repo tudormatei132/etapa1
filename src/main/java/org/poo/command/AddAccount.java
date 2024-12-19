@@ -16,6 +16,7 @@ public class AddAccount implements  Command {
     private CommandInput command;
     private HashMap<String, User> userMap;
     private HashMap<String, Account> map;
+
     public AddAccount(final CommandInput action, final HashMap<String, User> userMap,
                       final HashMap<String, Account> map) {
         command = action;
@@ -23,7 +24,10 @@ public class AddAccount implements  Command {
         this.map = map;
     }
 
-
+    /**
+     * will create a new account and add it to the Account Map and
+     * in its user's ArrayList
+     */
     @Override
     public void execute() {
         User temp = userMap.get(command.getEmail());
@@ -40,13 +44,12 @@ public class AddAccount implements  Command {
         }
 
 
-        System.out.println(account.getType().toString());
-
 
 
         temp.addAccount(account);
-        String IBAN = account.getIBAN().toString();
-        map.put(IBAN, account);
+        String iban = account.getIban().toString();
+        map.put(iban, account);
+
         AccountCreation creation = new AccountCreation(command.getTimestamp());
         account.getTransactions().add(creation);
         userMap.get(command.getEmail()).getTransactions().add(creation);

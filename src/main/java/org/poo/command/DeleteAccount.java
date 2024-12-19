@@ -25,7 +25,10 @@ public class DeleteAccount implements Command {
         this.timestamp = command.getTimestamp();
     }
 
-
+    /**
+     * deletes the account if it exists and it has no funds
+     * will also remove it from the map and the array list
+     */
     @Override
     public void execute() {
         Account temp = map.get(command.getAccount());
@@ -40,14 +43,14 @@ public class DeleteAccount implements Command {
             temp.getUser().removeAccount(temp);
             map.remove(command.getAccount());
             Log succes = new Log.Builder("deleteAccount", timestamp).
-                    setDetailsTimestamp(timestamp).setSucces("Account deleted").build();
+                    setDetailsTimestamp(timestamp).setSuccess("Account deleted").build();
             output.add(succes.print(mapper));
             return;
         }
 
         Log log = new Log.Builder("deleteAccount", timestamp).setDetailsTimestamp(timestamp)
-                .setError("Account couldn't be deleted - see org.poo.transactions " +
-                        "for details").build();
+                .setError("Account couldn't be deleted - see org.poo.transactions "
+                        + "for details").build();
         output.add(log.print(mapper));
 
         NonNullBalance deletionFailed = new NonNullBalance(timestamp);

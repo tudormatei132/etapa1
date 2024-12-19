@@ -20,6 +20,10 @@ public class CheckCardStatus implements Command {
         this.mapper = mapper;
     }
 
+
+    /**
+     * if the card exists, it will update its status based on the account's balance
+     */
     public void execute() {
 
         if (card == null) {
@@ -33,13 +37,13 @@ public class CheckCardStatus implements Command {
             return;
         }
         card.update();
-        String new_status = card.getStatus().toString();
+        String newStatus = card.getStatus().toString();
 
 
         Transaction checkStatus;
-        if (new_status.equals("frozen")) {
-            checkStatus = new Transaction(timestamp, "You have reached the minimum amount of " +
-                    "funds, the card will be frozen");
+        if (newStatus.equals("frozen")) {
+            checkStatus = new Transaction(timestamp, "You have reached the minimum amount of "
+                    + "funds, the card will be frozen");
             card.getAccount().getTransactions().add(checkStatus);
             card.getAccount().getUser().getTransactions().add(checkStatus);
         }

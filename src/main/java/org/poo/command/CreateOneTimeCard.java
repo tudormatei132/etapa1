@@ -20,14 +20,17 @@ public class CreateOneTimeCard implements Command {
         this.timestamp = timestamp;
     }
 
+    /**
+     * used to create a one time pay card
+     */
     public void execute() {
         OneTimeCard temp = new OneTimeCard(new StringBuilder(Utils.generateCardNumber()), account);
-        account.AddCard(temp);
+        account.addCard(temp);
         String cardNumber = temp.getCardNumber().toString();
         cardMap.put(cardNumber, temp);
-        CardCreation new_card = new CardCreation(timestamp, temp.getCardNumber().toString(),
-                account.getUser().getEmail().toString(), account.getIBAN().toString());
-        account.getUser().getTransactions().add(new_card);
-        account.getTransactions().add(new_card);
+        CardCreation newCard = new CardCreation(timestamp, temp.getCardNumber().toString(),
+                account.getUser().getEmail().toString(), account.getIban().toString());
+        account.getUser().getTransactions().add(newCard);
+        account.getTransactions().add(newCard);
     }
 }

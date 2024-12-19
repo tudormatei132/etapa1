@@ -13,18 +13,23 @@ public class PrintTransactions implements Command {
     private ArrayNode output;
     private ObjectMapper mapper;
     private int timestamp;
-    public PrintTransactions(User user, ArrayNode output, ObjectMapper mapper, int timestamp) {
+    public PrintTransactions(final User user, final ArrayNode output, final ObjectMapper mapper,
+                             final int timestamp) {
         this.user = user;
         this.output = output;
         this.mapper = mapper;
         this.timestamp = timestamp;
     }
 
-
+    /**
+     * checks if the user exists in the database and print the transactions made by them
+     */
     public void execute() {
         if (user == null) {
-            Log error = new Log.Builder("printTransactions", timestamp).setDetailsTimestamp(timestamp)
+            Log error = new Log.Builder("printTransactions", timestamp)
+                            .setDetailsTimestamp(timestamp)
                             .setError("User not found").build();
+
             output.add(error.print(mapper));
             return;
         }

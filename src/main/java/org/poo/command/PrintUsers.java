@@ -23,6 +23,10 @@ public class PrintUsers implements Command {
         this.outputNode = outputNode;
     }
 
+    /**
+     * will iterate through the user ArrayList and call the printUser command from the User class
+     * which will add to the output the details for every user
+     */
     public void execute() {
         ObjectNode output = mapper.createObjectNode();
         output.put("command", "printUsers");

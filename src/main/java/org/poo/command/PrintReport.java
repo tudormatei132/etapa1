@@ -15,8 +15,8 @@ public class PrintReport implements Command {
     private int start, stop, timestamp;
     private ArrayNode output;
     private ObjectMapper mapper;
-    public PrintReport(Account account, int start, int stop,
-                       ArrayNode output, ObjectMapper mapper, int timestamp) {
+    public PrintReport(final Account account, final int start, final int stop,
+                       final ArrayNode output, final ObjectMapper mapper, final int timestamp) {
         this.account = account;
         this.start = start;
         this.stop = stop;
@@ -25,7 +25,9 @@ public class PrintReport implements Command {
         this.timestamp = timestamp;
     }
 
-
+    /**
+     * checks if the account exists and prints its reports
+     */
     @Override
     public void execute() {
         if (account == null) {
@@ -38,7 +40,7 @@ public class PrintReport implements Command {
         ObjectNode node = mapper.createObjectNode();
         node.put("command", "report");
         ObjectNode details = mapper.createObjectNode();
-        details.put("IBAN", account.getIBAN().toString());
+        details.put("IBAN", account.getIban().toString());
         details.put("balance", account.getBalance());
         details.put("currency", account.getCurrency().toString());
         ArrayNode report = mapper.createArrayNode();

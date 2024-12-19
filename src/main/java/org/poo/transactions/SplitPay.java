@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class SplitPay extends Transaction {
@@ -20,7 +20,11 @@ public class SplitPay extends Transaction {
         this.involvedAccounts = involvedAccounts;
         this.amount = amount;
     }
-
+    /**
+     * will print the details of the transaction
+     * @param mapper used to create the ObjectNode
+     * @return the node which will be added to the output node
+     */
     public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());

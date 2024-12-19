@@ -14,6 +14,9 @@ public class AddFunds implements Command {
         this.timestamp = timestamp;
     }
 
+    /**
+     * will try to add funds to account, if it exists
+     */
     public void execute() {
         if (account == null) {
             Log error = new Log.Builder("addFunds", timestamp).

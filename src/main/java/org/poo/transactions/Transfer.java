@@ -15,8 +15,12 @@ public class Transfer extends Transaction {
         this.senderIBAN = senderIBAN;
         this.receiverIBAN = receiverIBAN;
     }
-
-    public ObjectNode print(ObjectMapper mapper) {
+    /**
+     * will print the details of the transaction
+     * @param mapper used to create the ObjectNode
+     * @return the node which will be added to the output node
+     */
+    public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());
         result.put("description", getDescription());

@@ -18,8 +18,9 @@ public class SendMoney implements Command {
     private String sender, receiver;
     private HashMap<String, Account> accountMap;
 
-    public SendMoney(String description, User user, double amount, Converter converter,
-                     String sender, String receiver, int timestamp, HashMap<String, Account> accountMap) {
+    public SendMoney(final String description, final User user, final double amount,
+                     final Converter converter, final String sender, final String receiver,
+                     final int timestamp, final HashMap<String, Account> accountMap) {
         this.description = description;
         this.user = user;
         this.amount = amount;
@@ -30,6 +31,12 @@ public class SendMoney implements Command {
         this.accountMap = accountMap;
     }
 
+    /**
+     * checks if the sender account exists and if the receiver alias exists
+     * or if it's an IBAN
+     * if the conditions are met, transfer money from the sender to receiver
+     * it also converts the amount that will get into the receiver's account
+     */
     public void execute() {
 
         Account senderAccount = accountMap.get(sender);
@@ -65,14 +72,16 @@ public class SendMoney implements Command {
 
         Transfer transfer = new Transfer(timestamp, description,
                 Double.toString(amount) + " " + senderAccount.getCurrency(), "sent",
-                senderAccount.getIBAN().toString(), receiverAccount.getIBAN().toString());
+                senderAccount.getIban().toString(), receiverAccount.getIban().toString());
 
         senderAccount.getTransactions().add(transfer);
         senderAccount.getUser().getTransactions().add(transfer);
 
-        Transfer receivedMoney = new Transfer(timestamp, description, Double.toString(converted) + " " +
-                                    receiverAccount.getCurrency(), "received", senderAccount.getIBAN().toString(),
-                                    receiverAccount.getIBAN().toString());
+        Transfer receivedMoney = new Transfer(timestamp, description,
+                                      Double.toString(converted) + " "
+                                              + receiverAccount.getCurrency(), "received",
+                                              senderAccount.getIban().toString(),
+                                              receiverAccount.getIban().toString());
 
         receiverAccount.getTransactions().add(receivedMoney);
         receiverAccount.getUser().getTransactions().add(receivedMoney);

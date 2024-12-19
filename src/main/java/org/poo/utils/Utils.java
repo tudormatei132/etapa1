@@ -18,6 +18,7 @@ public final class Utils {
     private static Random ibanRandom = new Random(IBAN_SEED);
     private static Random cardRandom = new Random(CARD_SEED);
 
+    public static final int WARNING_DIFF = 30;
     /**
      * Utility method for generating an IBAN code.
      *

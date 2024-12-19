@@ -15,7 +15,11 @@ public class Payment extends Transaction  {
         this.amount = amount;
         this.commerciant = commerciant;
     }
-
+    /**
+     * will print the details of the transaction
+     * @param mapper used to create the ObjectNode
+     * @return the node which will be added to the output node
+     */
     public ObjectNode print(final ObjectMapper mapper) {
         ObjectNode result = mapper.createObjectNode();
         result.put("timestamp", getTimestamp());

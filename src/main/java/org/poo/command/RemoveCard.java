@@ -18,6 +18,9 @@ public class RemoveCard implements Command {
         this.timestamp = timestamp;
     }
 
+    /**
+     * deletes a card by removing it from the card map and the ArrayList of the account
+     */
     @Override
     public void execute() {
         Card temp = cards.get(cardNumber);
@@ -28,9 +31,11 @@ public class RemoveCard implements Command {
         }
         CardDestruction removed = new CardDestruction(timestamp, cardNumber,
                                     temp.getAccount().getUser().getEmail().toString(),
-                                    temp.getAccount().getIBAN().toString());
+                                    temp.getAccount().getIban().toString());
+
         temp.getAccount().getUser().getTransactions().add(removed);
         temp.getAccount().getTransactions().add(removed);
+
         temp.getAccount().removeCard(temp);
         cards.remove(temp.getCardNumber().toString());
     }

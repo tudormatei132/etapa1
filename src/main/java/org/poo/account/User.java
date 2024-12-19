@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.poo.fileio.UserInput;
 import org.poo.transactions.Transaction;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,7 +37,13 @@ public class User {
         accounts.add(account);
     }
 
-    public ObjectNode printUser(ObjectMapper mapper) {
+
+    /**
+     * used to add to the output node the details of the user
+     * @param mapper mapper used to create the ObjectNode
+     * @return ObjectNode that has the details of the user
+     */
+    public ObjectNode printUser(final ObjectMapper mapper) {
         ObjectNode node = mapper.createObjectNode();
         node.put("firstName", firstName.toString());
         node.put("lastName", surname.toString());
@@ -52,6 +56,11 @@ public class User {
         return node;
     }
 
+
+    /**
+     * removes an account of the user
+     * @param account the account that will be removed
+     */
     public void removeAccount(final Account account) {
         accounts.remove(account);
     }

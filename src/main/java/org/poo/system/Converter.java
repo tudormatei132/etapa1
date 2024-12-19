@@ -5,11 +5,24 @@ import org.poo.graph.Edge;
 
 import java.util.HashSet;
 
-public class Converter {
+public final class Converter {
 
 
     private CurrencyGraph graph;
-    public Converter() {
+    private static Converter instance = null;
+
+    /**
+     * necessary for Singleton pattern, used because we only need one Converter to do the job
+     * @return the instance of the Converter
+     */
+    public static Converter getInstance() {
+        if (instance == null) {
+            instance = new Converter();
+        }
+        return instance;
+    }
+
+    private Converter() {
         graph = new CurrencyGraph();
     }
 
@@ -69,5 +82,11 @@ public class Converter {
         return dfs(from, to, visited, 1);
     }
 
+    /**
+     * used to reset between tests
+     */
+    public void reset() {
+        graph = new CurrencyGraph();
+    }
 
 }

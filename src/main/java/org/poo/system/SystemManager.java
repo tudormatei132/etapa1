@@ -22,8 +22,7 @@ public class SystemManager {
     private HashMap<String, Account> map;
     private HashMap<String, User> userMap;
     private HashMap<String, Card> cardMap;
-    private Converter converter;
-
+    private final Converter converter;
 
 
     public SystemManager() {
@@ -31,7 +30,7 @@ public class SystemManager {
         map = new HashMap<>();
         userMap = new HashMap<>();
         cardMap = new HashMap<>();
-        converter = new Converter();
+        converter = Converter.getInstance();
     }
 
 
@@ -58,6 +57,8 @@ public class SystemManager {
         for (CommandInput command : input.getCommands()) {
             handler.execute(command);
         }
+
+        converter.reset();
     }
 
 }

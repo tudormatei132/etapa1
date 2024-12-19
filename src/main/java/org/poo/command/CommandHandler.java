@@ -39,26 +39,26 @@ public class CommandHandler {
     private Command getCommand(final CommandInput command) {
         switch (command.getCommand()) {
             case "addAccount":
-                return new AddAccount(command, system.getUserMap(), system.getMap());
+                return new AddAccount(command, system.getUserMap(), system.getAccountMap());
 
 
             case "deleteAccount":
-                return new DeleteAccount(command, system.getMap(), mapper, output);
+                return new DeleteAccount(command, system.getAccountMap(), mapper, output);
 
 
             case "printUsers":
                 return new PrintUsers(system.getUsers(), mapper, command.getTimestamp(), output);
 
             case "createCard":
-                return new CreateCard(system.getMap().get(command.getAccount()),
+                return new CreateCard(system.getAccountMap().get(command.getAccount()),
                         system.getCardMap(), command.getTimestamp(), command.getEmail());
 
             case "addFunds":
-                return new AddFunds(system.getMap().get(command.getAccount()),
+                return new AddFunds(system.getAccountMap().get(command.getAccount()),
                         command.getAmount(), command.getTimestamp());
 
             case "createOneTimeCard":
-                return new CreateOneTimeCard(system.getMap().get(command.getAccount()),
+                return new CreateOneTimeCard(system.getAccountMap().get(command.getAccount()),
                         system.getCardMap(), command.getTimestamp());
 
             case "deleteCard":
@@ -77,7 +77,7 @@ public class CommandHandler {
                 return new SendMoney(command.getDescription(),
                         system.getUserMap().get(command.getEmail()), command.getAmount(),
                         system.getConverter(), command.getAccount(), command.getReceiver(),
-                        command.getTimestamp(), system.getMap());
+                        command.getTimestamp(), system.getAccountMap());
 
 
             case "printTransactions":
@@ -92,39 +92,40 @@ public class CommandHandler {
 
             case "setMinBalance":
                 return new SetMinimumBalance(command.getAmount(),
-                        system.getMap().get(command.getAccount()));
+                        system.getAccountMap().get(command.getAccount()));
 
 
             case "setAlias":
-                return new SetAlias(command.getAlias(), system.getMap().get(command.getAccount()),
+                return new SetAlias(command.getAlias(),
+                        system.getAccountMap().get(command.getAccount()),
                         system.getUserMap().get(command.getEmail()));
 
 
             case "splitPayment":
                 return new SplitPayment(command.getAccounts(), command.getTimestamp(),
-                        command.getCurrency(), command.getAmount(), system.getMap(),
+                        command.getCurrency(), command.getAmount(), system.getAccountMap(),
                         system.getConverter());
 
 
             case "report":
-                return new PrintReport(system.getMap().get(command.getAccount()),
+                return new PrintReport(system.getAccountMap().get(command.getAccount()),
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
 
 
             case "spendingsReport":
-                return new SpendingsReport(system.getMap().get(command.getAccount()),
+                return new SpendingsReport(system.getAccountMap().get(command.getAccount()),
                         command.getStartTimestamp(), command.getEndTimestamp(), output, mapper,
                         command.getTimestamp());
 
 
             case "changeInterestRate":
-                return new ChangeInterestRate(system.getMap().get(command.getAccount()),
+                return new ChangeInterestRate(system.getAccountMap().get(command.getAccount()),
                         command.getInterestRate(), command.getTimestamp(), output, mapper);
 
 
             case "addInterest":
-                return new GetInterest(system.getMap().get(command.getAccount()),
+                return new GetInterest(system.getAccountMap().get(command.getAccount()),
                         command.getTimestamp(), output, mapper);
             default:
                 return null;

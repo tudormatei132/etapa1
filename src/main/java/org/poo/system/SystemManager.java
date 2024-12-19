@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class SystemManager {
 
     private ArrayList<User> users;
-    private HashMap<String, Account> map;
+    private HashMap<String, Account> accountMap;
     private HashMap<String, User> userMap;
     private HashMap<String, Card> cardMap;
     private final Converter converter;
@@ -27,7 +27,7 @@ public class SystemManager {
 
     public SystemManager() {
         users = new ArrayList<>();
-        map = new HashMap<>();
+        accountMap = new HashMap<>();
         userMap = new HashMap<>();
         cardMap = new HashMap<>();
         converter = Converter.getInstance();
